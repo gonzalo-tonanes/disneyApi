@@ -37,14 +37,6 @@ public class RestControllerCharacter {
 		
 		return ToCharacterDTO.createCharactersSimpleDTO(serviceCharacter.findAll());
 	}	
-	
-	@GetMapping("/alltest")
-	public List<CharacterDisneyFullDTO> test(){
-		
-		return ToCharacterDTO.createCharactersFullDTO(serviceCharacter.findAll());
-		//return serviceCharacter.findAll();
-	}
-	
 
 	@PostMapping("/add")
 	public void addCharacter(@Valid @RequestBody DisneyCharacter character){
