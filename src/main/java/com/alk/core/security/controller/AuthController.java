@@ -56,13 +56,13 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> nuevo(@Valid @RequestBody NewUser newUser, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
-            return new ResponseEntity<Message>(new Message("campos mal puestos o email inválido"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<Message>(new Message("wrong fields entered"), HttpStatus.BAD_REQUEST);
         }
         if(userService.existsByUsername(newUser.getUsername())) {
-            return new ResponseEntity<Message>(new Message("ese nombre ya existe"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<Message>(new Message("that name already exists"), HttpStatus.BAD_REQUEST);
         }
         if(userService.existsByEmail(newUser.getEmail())) {
-            return new ResponseEntity<Message>(new Message("ese email ya existe"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<Message>(new Message("that email already exists "), HttpStatus.BAD_REQUEST);
         }
         User user =
                 new User(newUser.getName(), newUser.getUsername(), newUser.getEmail(),
@@ -74,13 +74,13 @@ public class AuthController {
         user.setRoles(roles);
         userService.save(user);
         sendGreetingEmail.sendEmail(newUser).getStatusCode();
-        return new ResponseEntity<Message>(new Message("usuario guardado"), HttpStatus.CREATED);
+        return new ResponseEntity<Message>(new Message("user saved"), HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginUser userLogin, BindingResult bindingResult){
         if(bindingResult.hasErrors())
-            return new ResponseEntity<Message>(new Message("campos mal puestos"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<Message>(new Message("wrong fields"), HttpStatus.BAD_REQUEST);
         Authentication authentication =
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLogin.getUsername(), userLogin.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
